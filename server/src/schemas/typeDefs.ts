@@ -8,4 +8,16 @@ export const typeDefs = `
         title: String!
     }
 
+    type User {
+      username: String
+      email: String
+      password: String
+      savedBooks: Book[]!
+    }
+
+    type Query {
+       books: [Book]
+        
+    }
+
 `
