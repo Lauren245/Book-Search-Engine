@@ -1,13 +1,14 @@
 const typeDefs = `
   type User {
-    username: String
-    email: String
-    password: String
-    savedBooks: Book[]!
+    _id: String!
+    username: String!
+    email: String!
+    password: String!
+    savedBooks: [Book]!
   }
 
   type Book {
-      authors: String[]!
+      authors: [String]!
       description: String!
       bookId: String!
       image: String!
@@ -16,7 +17,7 @@ const typeDefs = `
   }
 
   type Query {
-      books: [Book]
+      user(_id: String, username: String): User
         
   }
 
