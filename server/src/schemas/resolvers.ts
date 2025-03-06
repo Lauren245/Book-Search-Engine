@@ -53,10 +53,9 @@ const resolvers = {
         // Query to get the authenticated user's information
         // The 'me' query relies on the context to check if the user is authenticated
         me: async (_parent: any, _args: any, context: any) => {
-            console.log('context.user = ', JSON.stringify(context.user));
             // If the user is authenticated, find and return the user's information along with their thoughts
             if (context.user) {
-                return User.findOne({ _id: context.user._id }).populate('savedBooks');
+                return User.findOne({ _id: context.user._id });
             }
             // If the user is not authenticated, throw an AuthenticationError
             throw new AuthenticationError('Could not authenticate user.');
@@ -103,9 +102,6 @@ const resolvers = {
 
         // save a book to a user's `savedBooks` field by adding it to the set (to prevent duplicates)
         saveBook: async (_parent: any, { book }: SaveBookArgs, context: any) => {
-            console.log('context.user = ', JSON.stringify(context.user));
-            console.log('book = ', book);
-
             if(context.user){
                 return await User.findOneAndUpdate(
                     { _id: context.user._id},
@@ -121,7 +117,8 @@ const resolvers = {
             if(context.user){
                 return await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $pull: {savedBooks: { bookId }}}
+                    { $pull: {savedBooks: { bookId }}},
+                    { new: true }
                 );
             }
             throw new AuthenticationError('You must be logged in to remove a book.');

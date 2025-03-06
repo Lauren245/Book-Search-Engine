@@ -64,6 +64,7 @@ const SavedBooks = () => {
         </h2>
         <Row>
           {userData.savedBooks.map((book: Book) => {
+            console.log("book.bookId = ", book.bookId);
             return (
               <Col md='4'>
                 <Card key={book.bookId} border='dark'>
