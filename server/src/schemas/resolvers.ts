@@ -95,6 +95,7 @@ const resolvers = {
         // save a book to a user's `savedBooks` field by adding it to the set (to prevent duplicates)
         saveBook: async (_parent: any, { book }: SaveBookArgs, context: any) => {
             console.log('context.user = ', JSON.stringify(context.user));
+            console.log('book = ', book);
 
             if(context.user){
                 return await User.findOneAndUpdate(
