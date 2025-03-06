@@ -4,6 +4,12 @@ import User from '../models/User.js';
 // import sign token function from auth
 import { signToken } from '../services/auth.js';
 
+export const findUser = async (id?: string, username?: string) => {
+  return await User.findOne({
+    $or: [{ _id: id }, { username }],
+  });
+};
+
 // get a single user by either their id or their username
 export const getSingleUser = async (req: Request, res: Response) => {
   const foundUser = await User.findOne({
