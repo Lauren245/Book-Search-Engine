@@ -7,20 +7,21 @@ dotenv.config();
 export const authenticateToken = ({ req }: any) => {
   let token = req.body.token || req.query.token || req.headers.authorization;
 
-  // If the token is sent in the authorization header, extract the token from the header
-  if(req.headers.authorization){
+  if (req.headers.authorization) {
     token = token.split(' ').pop().trim();
   }
 
-  if(!token){
-    return req;
+  if (!token) {
+    console.log('No token found');
+    return { user: null };  // Ensure context.user is set, even if null
   }
 
-  try{
-    const { data }: any = jwt.verify(token, process.env.JWT_SECRET_KEY || '', { maxAge: '2hr' });
-    req.user = data;
-  }catch (error){
-    console.log('invalid token');
+  try {
+    const decodedUser: any = jwt.verify(token, process.env.JWT_SECRET_KEY || '', { maxAge: '2hr' });
+    return { user: decodedUser }; // Return an object with user
+  } catch (error) {
+    console.log('Invalid Token:', error);
+    return { user: null }; // Return null user on failure
   }
 };
 
