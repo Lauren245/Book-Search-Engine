@@ -21,13 +21,19 @@ interface LoginUserArgs {
     password: string;
 }
 
-interface BookArgs {
-    bookId: string;
-    title: string;
-    authors: string[];
-    description: string;
-    image: string;
-    link: string;
+interface SaveBookArgs {
+    book: {
+        bookId: string;
+        title: string;
+        authors: string[];
+        description: string;
+        image: string;
+        link: string;
+    }
+}
+
+interface RemoveBookArgs {
+    bookId: string
 }
 
 const resolvers = {
@@ -51,7 +57,7 @@ const resolvers = {
     Mutation: {
         addUser: async (_parent: any, { input }: AddUserArgs) => {
             // Create a new user with the provided username, email, and password
-            const user = await User.create({ ...input });
+            const user = await User.create({ ...input, savedBooks: [] });
     
             // Sign a token with the user's information
             const token = signToken(user.username, user.email, user._id);
@@ -87,22 +93,23 @@ const resolvers = {
           },
 
         // save a book to a user's `savedBooks` field by adding it to the set (to prevent duplicates)
-        saveBook: async (_parent: any, { ...book }: BookArgs, context: any) => {
+        saveBook: async (_parent: any, { book }: SaveBookArgs, context: any) => {
             if(context.user){
                 return await User.findOneAndUpdate(
                     { _id: context.user._id},
-                    { $addToSet: { ...book } }
+                    { $addToSet: { savedBooks: book } },
+                    { new: true }
                 );
             }
-            throw AuthenticationError;
+            throw new AuthenticationError('You must be logged in to save a book.');
         },
 
         // remove a book from `savedBooks`
-        removeBook: async (_parent: any, { bookId }: BookArgs, context: any) => {
+        removeBook: async (_parent: any, { bookId }: RemoveBookArgs, context: any) => {
             if(context.user){
                 return await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $pull: {savedBooks: bookId}}
+                    { $pull: {savedBooks: { bookId }}}
                 );
             }
             throw AuthenticationError;

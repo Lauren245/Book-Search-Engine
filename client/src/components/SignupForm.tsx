@@ -33,10 +33,11 @@ const SignupForm = ({}: { handleModalClose: () => void }) => {
       event.preventDefault();
       event.stopPropagation();
     }
-
+    //remove savedBooks since it is not needed to create a user, and will cause an error.
+    const { savedBooks, ...userInput } = userFormData
     try {
       const { data } = await addUserMutation({
-        variables: { input: { ...userFormData} }
+        variables: { input: userInput }
       });
 
       Auth.login(data.addUserMutation.token);
