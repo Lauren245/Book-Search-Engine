@@ -112,7 +112,7 @@ const resolvers = {
                     { $pull: {savedBooks: { bookId }}}
                 );
             }
-            throw AuthenticationError;
+            throw new AuthenticationError('You must be logged in to remove a book.');
         }
 
     }
