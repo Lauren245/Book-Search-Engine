@@ -38,7 +38,7 @@ Key features include:
 This project demonstrates the use of modern web development technologies and best practices, including React, GraphQL, Apollo Client, Express, Node.js, and MongoDB.
 
 ## Installation
-**Note: The app does not need to be installed unless you wish to run the app locally on your machine. To just use the app go to [URL HERE]** 
+**Note: The app does not need to be installed unless you wish to run the app locally on your machine. To just use the app go to https://book-search-engine-62x0.onrender.com** 
 
 To install this application, follow these steps:
 1. **Clone the repository:**
@@ -117,8 +117,11 @@ Email: laurenmoorejm@gmail.com
 
 ## Screenshots
 
+**Image of the saved books for a user.**
+![a screenshot of the application running in a browser. It shows a list of three books saved by a user with the username lauruy](./assets/screenshots/Book-Search-API-Saved-Books.jpg)
+
 ## Render Deployed Version
-[Click here](#) to view the app as deployed on Render.
+[Click here](https://book-search-engine-62x0.onrender.com) to view the app as deployed on Render.
 *Note: since it is being hosted on a free tier, it will take a while for the app to load when opening it for the first time.*
 
 --- 
