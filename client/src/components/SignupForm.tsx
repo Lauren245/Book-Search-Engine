@@ -39,7 +39,7 @@ const SignupForm = ({}: { handleModalClose: () => void }) => {
       const { data } = await addUserMutation({
         variables: { input: userInput }
       });
-      console.log('data = ', data);
+      //console.log('data = ', data);
       if (data && data.addUser && data.addUser.token) {
         Auth.login(data.addUser.token);
       } else {
