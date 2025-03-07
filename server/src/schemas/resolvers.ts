@@ -112,14 +112,23 @@ const resolvers = {
 
         // remove a book from `savedBooks`
         removeBook: async (_parent: any, { bookId }: RemoveBookArgs, context: any) => {
-            if(context.user){
-                return await User.findOneAndUpdate(
+                if(!context.user){
+                    /*this is just here as an added security measure. It should not be possible for a user to have books to remove if
+                      they are not logged in.*/
+                    throw new AuthenticationError('You must be logged in to remove a book.');                 
+                }
+
+                const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $pull: {savedBooks: { bookId }}},
+                    { $pull: { savedBooks: { bookId: bookId } } },
                     { new: true }
                 );
-            }
-            throw new AuthenticationError('You must be logged in to remove a book.');
+
+                if(!updatedUser){
+                    throw new Error('User not found');
+                }
+
+                return updatedUser;
         }
 
     }
