@@ -39,8 +39,12 @@ const SignupForm = ({}: { handleModalClose: () => void }) => {
       const { data } = await addUserMutation({
         variables: { input: userInput }
       });
-
-      Auth.login(data.addUserMutation.token);
+      console.log('data = ', data);
+      if (data && data.addUser && data.addUser.token) {
+        Auth.login(data.addUser.token);
+      } else {
+        console.error("Token not found in response");
+      }
       
     } catch (err) {
       console.error(err);

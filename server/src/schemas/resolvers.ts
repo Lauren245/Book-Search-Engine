@@ -16,7 +16,6 @@ interface AddUserArgs {
 };
 
 interface LoginUserArgs {
-    username: string;
     email: string;
     password: string;
 }
@@ -74,17 +73,15 @@ const resolvers = {
             return { token, user };
         },
 
-        login: async (_parent: any, { username, email, password }: LoginUserArgs) => {
+        login: async (_parent: any, { email, password }: LoginUserArgs) => {
             // Find a user with the provided email
-            const user = await User.findOne({ 
-                $or: [{ username }, { email }]
-            });
+            const user = await User.findOne({ email });
           
             // If no user is found, throw an AuthenticationError
             if (!user) {
               throw new AuthenticationError('Could not authenticate user.');
             }
-          
+            
             // Check if the provided password is correct
             const correctPw = await user.isCorrectPassword(password);
           
@@ -95,7 +92,8 @@ const resolvers = {
           
             // Sign a token with the user's information
             const token = signToken(user.username, user.email, user._id);
-          
+            console.log('token = ', token);
+            console.log('user = ', user);
             // Return the token and the user
             return { token, user };
           },
