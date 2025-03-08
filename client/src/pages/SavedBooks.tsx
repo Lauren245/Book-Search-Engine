@@ -1,4 +1,5 @@
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
+import { useEffect } from 'react';
 
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME } from '../utils/queries';
@@ -16,7 +17,7 @@ const SavedBooks = () => {
   const userData: User = data?.me || { username: '', savedBooks: [] };
 
   const [removeBook] = useMutation(REMOVE_BOOK, {
-    refetchQueries: [{ query: GET_ME }],  // Automatically refetch GET_ME query after mutation
+    fetchPolicy: 'network-only',
     update(cache, { data }){
       //check if removeBook data exists
       if(!data?.removeBook) {
