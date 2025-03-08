@@ -52,6 +52,7 @@ const resolvers = {
         // Query to get the authenticated user's information
         // The 'me' query relies on the context to check if the user is authenticated
         me: async (_parent: any, _args: any, context: any) => {
+            console.log('running me resolver query.');
             // If the user is authenticated, find and return the user's information along with their thoughts
             if (context.user) {
                 return User.findOne({ _id: context.user._id });
@@ -92,8 +93,8 @@ const resolvers = {
           
             // Sign a token with the user's information
             const token = signToken(user.username, user.email, user._id);
-            console.log('token = ', token);
-            console.log('user = ', user);
+            //console.log('token = ', token);
+            //console.log('user = ', user);
             // Return the token and the user
             return { token, user };
           },
@@ -112,6 +113,7 @@ const resolvers = {
 
         // remove a book from `savedBooks`
         removeBook: async (_parent: any, { bookId }: RemoveBookArgs, context: any) => {
+            console.log('context = ', context);
                 if(!context.user){
                     /*this is just here as an added security measure. It should not be possible for a user to have books to remove if
                       they are not logged in.*/
@@ -122,12 +124,12 @@ const resolvers = {
                     { _id: context.user._id },
                     { $pull: { savedBooks: { bookId: bookId } } },
                     { new: true }
-                );
+                ).populate('savedBooks');
 
                 if(!updatedUser){
                     throw new Error('User not found');
                 }
-
+                // console.log('updatedUser = ', updatedUser);
                 return updatedUser;
         }
 
