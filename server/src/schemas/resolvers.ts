@@ -113,6 +113,7 @@ const resolvers = {
 
         // remove a book from `savedBooks`
         removeBook: async (_parent: any, { bookId }: RemoveBookArgs, context: any) => {
+            console.log('context = ', context);
                 if(!context.user){
                     /*this is just here as an added security measure. It should not be possible for a user to have books to remove if
                       they are not logged in.*/
