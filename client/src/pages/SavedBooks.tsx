@@ -16,12 +16,34 @@ const SavedBooks = () => {
   const userData: User = data?.me || { username: '', savedBooks: [] };
 
   const [removeBook] = useMutation(REMOVE_BOOK, {
-    update(cache, { data: { removeBook } }){
+    refetchQueries: [{ query: GET_ME }],  // Automatically refetch GET_ME query after mutation
+    update(cache, { data }){
+      //check if removeBook data exists
+      if(!data?.removeBook) {
+        console.warn('No data returned from the removeBook mutation.');
+        return;
+      }
+
+      console.log('Data returned from the removeBook mutation: ', data.removeBook);
+
+      const existingUser = cache.readQuery<{ me?: User }>({ query: GET_ME });
+
+      if(!existingUser?.me) {
+        console.warn('GET_ME query not found in cache.');
+        return;
+      }
+
+      // Update the cache with the new user data after removing the book
       cache.writeQuery({
         query: GET_ME,
-        data: { me: removeBook }
+        data: {
+          me: {
+            ...existingUser.me,
+            savedBooks: data.removeBook.savedBooks,
+          },
+        },
       });
-    }
+    },
   });
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
@@ -66,8 +88,8 @@ const SavedBooks = () => {
           {userData.savedBooks.map((book: Book) => {
             console.log("book.bookId = ", book.bookId);
             return (
-              <Col md='4'>
-                <Card key={book.bookId} border='dark'>
+              <Col key={book.bookId} md='4'>
+                <Card border='dark'>
                   {book.image ? (
                     <Card.Img
                       src={book.image}
