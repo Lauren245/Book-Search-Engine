@@ -6,9 +6,9 @@ dotenv.config();
 
 export const authenticateToken = ({ req }: any) => {
   let token = req.body.token || req.query.token || req.headers.authorization;
-  console.log("req.body = ", req.body);
-  console.log("req.query = ", req.query);
-  console.log("req.headers = ", req.headers);
+  //console.log("req.body = ", req.body);
+  //console.log("req.query = ", req.query);
+  //console.log("req.headers = ", req.headers);
   
   if (req.headers.authorization) {
     token = token.split(' ').pop().trim();

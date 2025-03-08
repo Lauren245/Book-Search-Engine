@@ -92,8 +92,8 @@ const resolvers = {
           
             // Sign a token with the user's information
             const token = signToken(user.username, user.email, user._id);
-            console.log('token = ', token);
-            console.log('user = ', user);
+            //console.log('token = ', token);
+            //console.log('user = ', user);
             // Return the token and the user
             return { token, user };
           },
@@ -122,12 +122,12 @@ const resolvers = {
                     { _id: context.user._id },
                     { $pull: { savedBooks: { bookId: bookId } } },
                     { new: true }
-                );
+                ).populate('savedBooks');
 
                 if(!updatedUser){
                     throw new Error('User not found');
                 }
-
+                // console.log('updatedUser = ', updatedUser);
                 return updatedUser;
         }
 
