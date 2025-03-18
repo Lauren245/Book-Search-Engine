@@ -100,9 +100,6 @@ Email: laurenmoorejm@gmail.com
 ## Resources
 
 ### 3rd-Party Software
-## Resources
-
-### 3rd-Party Software
 - **[React](https://reactjs.org/)**: A JavaScript library for building user interfaces.
 - **[Express](https://expressjs.com/)**: A minimal and flexible Node.js web application framework.
 - **[Node.js](https://nodejs.org/)**: A JavaScript runtime built on Chrome's V8 JavaScript engine.
